@@ -1,0 +1,824 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>ShynAI</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: full-bleed brushstroke-ray hero with a gold sun on the right, then calm pastel bands. */
+:root {
+  --bg: #FDF6EF;
+  --bg-2: #F9E7E3;
+  --surface: #FFFBF7;
+  --fg: #41263A;
+  --muted: #7A5B6E;
+  --line: rgba(65, 38, 58, 0.14);
+  --gold: #C99A3A;
+  --gold-soft: #E8C77A;
+  --gold-ink: #86601A;
+  --rose: #E3A0A8;
+  --lav: #CDBDF2;
+  --peach: #F6CDB8;
+  --ray-a: #FBF0E6;
+  --ray-b: #F2BFC0;
+  --ray-c: #FFF8EC;
+  --ray-d: #E8A3AA;
+  --btn-bg: #41263A;
+  --btn-fg: #FFF6EE;
+  --halo-op: 0.7;
+  --halo-core: rgba(255, 255, 255, 0.85);
+  --font-display: 'Cormorant Garamond', 'Cormorant', Georgia, 'Times New Roman', serif;
+  --font-body: 'Manrope', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --sx: 50%;
+  --sy: 190px;
+  --sun: 190px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1C1220;
+    --bg-2: #2B1A2E;
+    --surface: #2A1C2D;
+    --fg: #FAEDE6;
+    --muted: #CFB6C2;
+    --line: rgba(250, 237, 230, 0.16);
+    --gold: #E4B964;
+    --gold-soft: #C99A3F;
+    --gold-ink: #EBC878;
+    --rose: #E79DA7;
+    --lav: #A593DE;
+    --peach: #E9A98F;
+    --ray-a: #3A2437;
+    --ray-b: #7A3F55;
+    --ray-c: #4A2D44;
+    --ray-d: #9A5568;
+    --btn-bg: #E4B964;
+    --btn-fg: #2A1626;
+    --halo-op: 0.5;
+    --halo-core: rgba(255, 235, 240, 0.18);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #1C1220;
+  --bg-2: #2B1A2E;
+  --surface: #2A1C2D;
+  --fg: #FAEDE6;
+  --muted: #CFB6C2;
+  --line: rgba(250, 237, 230, 0.16);
+  --gold: #E4B964;
+  --gold-soft: #C99A3F;
+  --gold-ink: #EBC878;
+  --rose: #E79DA7;
+  --lav: #A593DE;
+  --peach: #E9A98F;
+  --ray-a: #3A2437;
+  --ray-b: #7A3F55;
+  --ray-c: #4A2D44;
+  --ray-d: #9A5568;
+  --btn-bg: #E4B964;
+  --btn-fg: #2A1626;
+  --halo-op: 0.5;
+  --halo-core: rgba(255, 235, 240, 0.18);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.65;
+  background: var(--bg);
+  color: var(--fg);
+  overflow-x: clip;
+}
+h1, h2, h3, p, ul { margin: 0; }
+ul { padding: 0; list-style: none; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--gold-ink); outline-offset: 3px; border-radius: 4px; }
+
+.wrap {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.band { padding-block: clamp(56px, 9vw, 112px); overflow: clip; }
+.band.tint { background: var(--bg-2); }
+
+.eyebrow {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold-ink);
+}
+h2 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(2rem, 4.6vw, 3.1rem);
+  line-height: 1.1;
+  text-wrap: balance;
+}
+h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.55rem;
+  line-height: 1.2;
+}
+.sec-head { display: grid; gap: 14px; max-width: 640px; margin-bottom: clamp(32px, 5vw, 56px); }
+.sec-head p { color: var(--muted); }
+
+/* ---------- Hero ---------- */
+.hero { position: relative; overflow: hidden; isolation: isolate; padding-bottom: clamp(72px, 10vw, 120px); }
+.rays, .rays i, .grain { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+.rays { inset: -8%; filter: blur(5px); }
+.rays i { inset: 0; display: block; }
+.rays .r1 {
+  background: conic-gradient(from 8deg at var(--sx) var(--sy),
+    var(--ray-a) 0 14deg, var(--ray-b) 14deg 27deg, var(--ray-c) 27deg 52deg, var(--ray-d) 52deg 63deg,
+    var(--ray-a) 63deg 88deg, var(--ray-b) 88deg 101deg, var(--ray-c) 101deg 129deg, var(--ray-d) 129deg 142deg,
+    var(--ray-a) 142deg 171deg, var(--ray-b) 171deg 184deg, var(--ray-c) 184deg 215deg, var(--ray-d) 215deg 229deg,
+    var(--ray-a) 229deg 255deg, var(--ray-b) 255deg 267deg, var(--ray-c) 267deg 297deg, var(--ray-d) 297deg 307deg,
+    var(--ray-a) 307deg 329deg, var(--ray-b) 329deg 343deg, var(--ray-c) 343deg 360deg);
+}
+.rays .r2 {
+  opacity: 0.8;
+  background: conic-gradient(from 0deg at var(--sx) var(--sy),
+    transparent 0 6deg, var(--gold-soft) 6deg 8.5deg, transparent 8.5deg 41deg, var(--gold-soft) 41deg 44deg,
+    transparent 44deg 70deg, var(--gold-soft) 70deg 71.5deg, transparent 71.5deg 118deg, var(--gold-soft) 118deg 122deg,
+    transparent 122deg 150deg, var(--gold-soft) 150deg 152deg, transparent 152deg 196deg, var(--gold-soft) 196deg 199.5deg,
+    transparent 199.5deg 231deg, var(--gold-soft) 231deg 233deg, transparent 233deg 262deg, var(--gold-soft) 262deg 266deg,
+    transparent 266deg 300deg, var(--gold-soft) 300deg 302.5deg, transparent 302.5deg 331deg, var(--gold-soft) 331deg 334deg,
+    transparent 334deg 360deg);
+}
+.grain {
+  opacity: 0.14;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+.hero::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 110px;
+  z-index: -1;
+  background: linear-gradient(to bottom, transparent, var(--bg));
+  pointer-events: none;
+}
+.sun {
+  position: absolute;
+  left: var(--sx);
+  top: var(--sy);
+  width: var(--sun);
+  height: var(--sun);
+  transform: translate(-50%, -50%);
+  z-index: 0;
+  filter: drop-shadow(0 0 28px rgba(232, 199, 122, 0.55));
+  pointer-events: none;
+}
+.sun-rays { transform-origin: 100px 100px; animation: turn 90s linear infinite; }
+@keyframes turn { to { transform: rotate(360deg); } }
+.spark { position: absolute; z-index: 0; color: var(--gold); pointer-events: none; }
+.spark svg, .moon svg { display: block; width: 100%; height: 100%; }
+.moon { position: absolute; z-index: 0; pointer-events: none; }
+
+nav.top {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 24px;
+  padding-block: 22px;
+}
+.mark {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.9rem;
+  line-height: 1;
+  text-decoration: none;
+  letter-spacing: 0.01em;
+}
+.mark span { color: var(--gold-ink); font-style: italic; font-weight: 500; }
+nav.top ul { display: flex; flex-wrap: wrap; gap: 6px 20px; font-size: 14px; font-weight: 500; }
+nav.top ul a { text-decoration: none; color: var(--muted); }
+nav.top ul a:hover { color: var(--fg); }
+
+.hero-copy {
+  position: relative;
+  z-index: 2;
+  max-width: 600px;
+  margin-top: 230px;
+  padding: clamp(22px, 4vw, 36px);
+  border-radius: 28px;
+  background: color-mix(in srgb, var(--bg) 66%, transparent);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  display: grid;
+  gap: 20px;
+}
+h1 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(2.7rem, 8vw, 4.9rem);
+  line-height: 1.02;
+  text-wrap: balance;
+}
+h1 em { font-style: italic; color: var(--gold-ink); }
+.lead { font-size: 1.05rem; color: var(--muted); max-width: 52ch; }
+.cta { display: flex; flex-wrap: wrap; gap: 12px; }
+.btn {
+  display: inline-flex;
+  align-items: center;
+  min-height: 46px;
+  padding: 0 24px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 15px;
+  text-decoration: none;
+  border: 1.5px solid var(--fg);
+}
+.btn.primary { background: var(--btn-bg); color: var(--btn-fg); border-color: var(--btn-bg); }
+.btn.ghost { background: transparent; color: var(--fg); }
+.btn:hover { transform: translateY(-1px); }
+
+@media (min-width: 900px) {
+  :root { --sx: 76%; --sy: 47%; --sun: 300px; }
+  .hero-copy { margin-top: 64px; }
+  nav.top { padding-block: 28px; }
+}
+
+/* ---------- About ---------- */
+.about { display: grid; gap: 40px; grid-template-columns: 1fr; }
+.about .lede { display: grid; gap: 18px; }
+.about .lede p { color: var(--muted); max-width: 56ch; }
+.pillars { display: grid; gap: 0; }
+.pillars li { display: grid; gap: 4px; padding-block: 20px; border-top: 1px solid var(--line); }
+.pillars li:last-child { border-bottom: 1px solid var(--line); }
+.pillars strong { font-family: var(--font-display); font-size: 1.4rem; font-weight: 600; }
+.pillars span { color: var(--muted); }
+@media (min-width: 860px) { .about { grid-template-columns: 1.05fr 0.95fr; gap: 72px; align-items: start; } }
+
+/* ---------- Problem / Solution ---------- */
+.ps { display: grid; gap: 20px; grid-template-columns: 1fr; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 24px; padding: clamp(24px, 4vw, 40px); display: grid; gap: 18px; align-content: start; min-width: 0; }
+.panel.solution { background: linear-gradient(160deg, var(--surface), color-mix(in srgb, var(--peach) 28%, var(--surface))); }
+.dots li { position: relative; padding-left: 26px; color: var(--muted); }
+.dots li + li { margin-top: 12px; }
+.dots li::before { content: ""; position: absolute; left: 2px; top: 0.62em; width: 9px; height: 9px; border-radius: 50%; background: var(--gold); }
+@media (min-width: 860px) { .ps { grid-template-columns: 1fr 1fr; gap: 28px; } }
+
+/* ---------- Features ---------- */
+.feat { display: grid; gap: 20px; grid-template-columns: 1fr; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 24px; padding: clamp(24px, 3.4vw, 36px); display: grid; gap: 14px; align-content: start; min-width: 0; }
+.card p { color: var(--muted); }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.chips li { font-size: 13px; font-weight: 500; padding: 5px 13px; border-radius: 999px; border: 1px solid var(--line); background: color-mix(in srgb, var(--lav) 22%, transparent); }
+.venn { width: 100%; max-width: 340px; height: auto; margin-top: 6px; }
+.venn text { fill: var(--fg); font-family: var(--font-body); font-size: 12px; font-weight: 600; text-anchor: middle; }
+.thought {
+  margin-top: 6px;
+  padding: 20px 22px;
+  border-radius: 20px;
+  background: radial-gradient(120% 140% at 50% 0%, color-mix(in srgb, var(--peach) 55%, transparent), color-mix(in srgb, var(--lav) 35%, transparent));
+  display: grid;
+  gap: 6px;
+}
+.thought small { font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold-ink); }
+.thought q { font-family: var(--font-display); font-size: 1.5rem; line-height: 1.2; font-style: italic; quotes: none; }
+@media (min-width: 860px) {
+  .feat { grid-template-columns: repeat(12, 1fr); gap: 24px; }
+  .f1 { grid-column: span 7; }
+  .f2 { grid-column: span 5; }
+  .f3 { grid-column: span 5; }
+  .f4 { grid-column: span 7; }
+}
+
+/* ---------- Demo ---------- */
+.demo { display: grid; gap: 48px; grid-template-columns: 1fr; align-items: center; }
+.demo-form { display: grid; gap: 18px; min-width: 0; }
+.demo-form p { color: var(--muted); }
+.field { display: grid; gap: 8px; max-width: 320px; }
+.field label { font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold-ink); }
+.field input {
+  font: inherit;
+  font-size: 17px;
+  min-height: 50px;
+  padding: 0 16px;
+  border-radius: 14px;
+  border: 1.5px solid var(--line);
+  background: var(--surface);
+  color: var(--fg);
+}
+.field input:focus-visible { border-color: var(--gold); }
+.field small { color: var(--muted); font-size: 13px; }
+.facts { display: grid; gap: 10px; padding-top: 6px; }
+.facts div { display: flex; flex-wrap: wrap; gap: 4px 12px; padding-block: 10px; border-top: 1px solid var(--line); }
+.facts dt { font-weight: 600; min-width: 150px; }
+.facts dd { margin: 0; color: var(--muted); flex: 1 1 200px; min-width: 0; }
+dl { margin: 0; }
+.note { font-size: 13px; color: var(--muted); }
+
+.demo-stage { padding: clamp(28px, 6vw, 60px); min-width: 0; }
+.halo { position: relative; isolation: isolate; }
+.halo::before {
+  content: "";
+  position: absolute;
+  inset: -22%;
+  z-index: -2;
+  border-radius: 50%;
+  opacity: var(--halo-op);
+  background: conic-gradient(from 20deg, #FFD3DF, #FFEBB8, #DDF6D2, #C9E7FF, #DCCBFF, #FFD3DF);
+  -webkit-mask: radial-gradient(circle, transparent 50%, #000 60%, #000 66%, transparent 76%);
+  mask: radial-gradient(circle, transparent 50%, #000 60%, #000 66%, transparent 76%);
+  filter: blur(10px);
+}
+.halo::after {
+  content: "";
+  position: absolute;
+  inset: -14%;
+  z-index: -1;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--halo-core) 0 45%, transparent 70%);
+}
+.sq { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; max-width: 420px; margin: 0 auto; }
+.cell {
+  background: color-mix(in srgb, var(--surface) 86%, transparent);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 12px 6px;
+  text-align: center;
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+.cell .n { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; color: var(--muted); }
+.cell .v { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.5rem, 5vw, 2rem); line-height: 1.1; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+.cell .t { font-size: 11.5px; color: var(--muted); overflow-wrap: anywhere; }
+.cell[data-level="strong"] { border-color: var(--gold); background: color-mix(in srgb, var(--gold-soft) 26%, var(--surface)); }
+.cell[data-level="zero"] .v { color: var(--muted); opacity: 0.6; }
+@media (min-width: 900px) { .demo { grid-template-columns: 0.95fr 1.05fr; gap: 72px; } }
+
+/* ---------- Anti-fatalism ---------- */
+.anti { display: grid; gap: 40px; grid-template-columns: 1fr; align-items: center; }
+.swirl {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  aspect-ratio: 3 / 4;
+  margin: 0 auto;
+  border-radius: 200px 200px 28px 28px;
+  overflow: hidden;
+  background:
+    radial-gradient(70% 40% at 50% 12%, color-mix(in srgb, var(--peach) 90%, transparent), transparent 70%),
+    radial-gradient(90% 60% at 50% 100%, color-mix(in srgb, var(--lav) 80%, transparent), transparent 70%),
+    linear-gradient(170deg, color-mix(in srgb, var(--rose) 55%, var(--bg)), color-mix(in srgb, var(--peach) 65%, var(--bg)));
+}
+.swirl svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.swirl q {
+  position: absolute;
+  left: 12%; right: 12%; top: 38%;
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 4.6vw, 1.6rem);
+  line-height: 1.25;
+  font-style: italic;
+  color: #4A2A3E;
+  quotes: none;
+}
+.rules { display: grid; gap: 18px; margin-top: 24px; }
+.rules li { display: grid; gap: 2px; }
+.rules strong { font-weight: 600; }
+.rules span { color: var(--muted); }
+.beforeafter { display: grid; gap: 10px; margin-top: 28px; }
+.ba { padding: 16px 18px; border-radius: 16px; border: 1px solid var(--line); background: var(--surface); display: grid; gap: 4px; }
+.ba small { font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+.ba.good { border-color: var(--gold); }
+.ba.good small { color: var(--gold-ink); }
+@media (min-width: 860px) { .anti { grid-template-columns: 0.8fr 1.2fr; gap: 80px; } }
+
+/* ---------- Tech ---------- */
+.stack { display: grid; }
+.stack li { display: grid; gap: 4px 32px; padding-block: 22px; border-top: 1px solid var(--line); grid-template-columns: 1fr; }
+.stack li:last-child { border-bottom: 1px solid var(--line); }
+.stack .layer { font-size: 12px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold-ink); }
+.stack .tool { font-family: var(--font-display); font-weight: 600; font-size: 1.6rem; line-height: 1.2; }
+.stack .role { color: var(--muted); }
+@media (min-width: 860px) { .stack li { grid-template-columns: 170px 1fr 1.1fr; align-items: baseline; } }
+
+/* ---------- Pricing ---------- */
+.plans { display: grid; gap: 20px; grid-template-columns: 1fr; max-width: 860px; }
+.plan { background: var(--surface); border: 1px solid var(--line); border-radius: 24px; padding: clamp(26px, 4vw, 40px); display: grid; gap: 18px; align-content: start; }
+.plan.pro { border: 2px solid var(--gold); background: linear-gradient(165deg, var(--surface), color-mix(in srgb, var(--gold-soft) 20%, var(--surface))); }
+.price { font-family: var(--font-display); font-size: 3.2rem; font-weight: 500; line-height: 1; }
+.price small { font-family: var(--font-body); font-size: 15px; color: var(--muted); font-weight: 500; }
+.badge { justify-self: start; font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 12px; border-radius: 999px; background: var(--gold-soft); color: #3A2410; }
+@media (min-width: 760px) { .plans { grid-template-columns: 1fr 1fr; gap: 28px; } }
+
+footer { padding-block: 48px 64px; border-top: 1px solid var(--line); }
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 32px; align-items: baseline; }
+footer p { color: var(--muted); font-size: 14px; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .sun-rays { animation: none; }
+  .btn:hover { transform: none; }
+}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="gg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F8E2A0"/>
+      <stop offset="0.5" stop-color="#CF9D36"/>
+      <stop offset="1" stop-color="#F2D584"/>
+    </linearGradient>
+    <radialGradient id="gd" cx="0.38" cy="0.32" r="0.8">
+      <stop offset="0" stop-color="#FFF0BC"/>
+      <stop offset="0.45" stop-color="#E2B54E"/>
+      <stop offset="1" stop-color="#B8862B"/>
+    </radialGradient>
+    <symbol id="spark" viewBox="-12 -12 24 24">
+      <path d="M0 -11 C1 -3.5 3.5 -1 11 0 C3.5 1 1 3.5 0 11 C-1 3.5 -3.5 1 -11 0 C-3.5 -1 -1 -3.5 0 -11Z" fill="url(#gg)"/>
+    </symbol>
+  </defs>
+</svg>
+
+<header class="hero" id="top">
+  <div class="rays" aria-hidden="true"><i class="r1"></i><i class="r2"></i></div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <svg class="sun" viewBox="0 0 200 200" aria-hidden="true">
+    <g class="sun-rays" id="sunRays"></g>
+    <circle cx="100" cy="100" r="35" fill="url(#gd)"/>
+    <circle cx="100" cy="100" r="29" fill="none" stroke="#FFF6D6" stroke-opacity="0.35" stroke-width="1.4"/>
+    <ellipse cx="90" cy="88" rx="13" ry="8" fill="#FFF8DC" fill-opacity="0.35" transform="rotate(-30 90 88)"/>
+  </svg>
+
+  <div class="moon" style="left:5%;bottom:7%;width:64px;height:64px" aria-hidden="true">
+    <svg viewBox="0 0 60 60"><path d="M34 4 A27 27 0 1 0 34 56 A21 21 0 1 1 34 4Z" fill="url(#gg)"/></svg>
+  </div>
+  <div class="spark" style="right:9%;bottom:15%;width:46px;height:46px" aria-hidden="true"><svg><use href="#spark"/></svg></div>
+  <div class="spark" style="right:21%;bottom:9%;width:34px;height:34px" aria-hidden="true"><svg><use href="#spark"/></svg></div>
+  <div class="spark" style="right:5%;bottom:26%;width:20px;height:20px" aria-hidden="true"><svg><use href="#spark"/></svg></div>
+
+  <div class="wrap">
+    <nav class="top" aria-label="Негізгі навигация">
+      <a class="mark" href="#top">Shyn<span>AI</span></a>
+      <ul>
+        <li><a href="#about">Жоба туралы</a></li>
+        <li><a href="#features">Функционал</a></li>
+        <li><a href="#demo">Матрица</a></li>
+        <li><a href="#tech">Технология</a></li>
+        <li><a href="#pricing">Бағасы</a></li>
+      </ul>
+    </nav>
+
+    <div class="hero-copy">
+      <p class="eyebrow">Self-Discovery платформасы</p>
+      <h1>Ішкі әлеміңе <em>шынайы</em> көзқарас</h1>
+      <p class="lead">ShynAI туған күн деректері арқылы есептелетін матрицаларды психологиялық тесттермен және жасанды интеллектпен біріктіреді. Нәтиже күрделі цифрлар емес, өзіңе арналған түсінікті сөз.</p>
+      <div class="cta">
+        <a class="btn primary" href="#demo">Матрицамды есептеу</a>
+        <a class="btn ghost" href="#about">Жоба туралы</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="band" id="about">
+    <div class="wrap about">
+      <div class="lede">
+        <p class="eyebrow">Жобаның мәні</p>
+        <h2>Болжам емес, өзіңді түсіну</h2>
+        <p>ShynAI өзін-өзі тануға (Self-Discovery) арналған заманауи платформа. Ол нумерология, Пифагор квадраты және натал картасы сияқты есептеулерді ғылыми психологиялық тесттермен және жасанды интеллектпен ұштастырады.</p>
+        <p>ShynAI болашақты болжамайды. Ол мінезіңді, күшті және әлсіз жақтарыңды объективті түсінуге және өзіңді дамытуға көмектеседі.</p>
+      </div>
+      <ul class="pillars">
+        <li><strong>Туған күн деректері</strong><span>Матрица судьбы, Пифагор квадраты, нумерологиялық кодтар және натал картасы.</span></li>
+        <li><strong>Психологиялық тесттер</strong><span>MBTI, темперамент және стресс деңгейін анықтайтын тесттер.</span></li>
+        <li><strong>Жасанды интеллект</strong><span>Күрделі есептеулерді қарапайым адам тіліне аударып, жеке кеңес береді.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="band tint" aria-labelledby="ps-h">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Мәселе және шешім</p>
+        <h2 id="ps-h">Өзіңді түсіну үшін ыңғайлы жол керек</h2>
+      </div>
+      <div class="ps">
+        <div class="panel">
+          <h3>Мәселе</h3>
+          <ul class="dots">
+            <li>Жастар арасында күйзеліс, бағыт таба алмау және өзін толық түсінбеу мәселесі өзекті.</li>
+            <li>Қолданыстағы гороскоптар мен эзотерикалық сайттар ескірген, сенімсіз немесе қорқынышты болжамдарға негізделген.</li>
+            <li>Психолог немесе астрологқа тұрақты бару қымбат әрі көп уақыт алады.</li>
+          </ul>
+        </div>
+        <div class="panel solution">
+          <h3>Шешім: ShynAI</h3>
+          <ul class="dots">
+            <li>Қолданушы бір рет тіркеліп, туған күнін енгізеді де, өз паспортын (матрицасын) алады.</li>
+            <li>AI күрделі цифрлар мен есептеулерді қарапайым, түсінікті тілге аударып, жеке кеңес береді.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="features" aria-labelledby="f-h">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Негізгі функционал</p>
+        <h2 id="f-h">Бір платформада төрт құрал</h2>
+        <p>Әрқайсысы бір-бірін толықтырады: есептеу, тест, талдау және күнделікті бағыт.</p>
+      </div>
+      <div class="feat">
+        <article class="card f1">
+          <p class="eyebrow">Personal Matrix</p>
+          <h3>Персональды цифрлық портрет</h3>
+          <p>Туған күн мен уақыт бойынша матрица автоматты есептеледі. Нәтиже мінезің мен әлеуетіңнің жеке паспорты болады.</p>
+          <ul class="chips">
+            <li>Матрица судьбы</li><li>Пифагор квадраты</li><li>Нумерологиялық кодтар</li><li>Натал картасы</li>
+          </ul>
+        </article>
+        <article class="card f2">
+          <p class="eyebrow">Psychometrics</p>
+          <h3>Психологиялық тесттер</h3>
+          <p>Тесттер қазіргі күйіңді көрсетеді: қалай ойлайсың, қалай әрекет етесің және қандай стрессте жүрсің.</p>
+          <ul class="chips">
+            <li>MBTI</li><li>Темперамент</li><li>Стресс деңгейі</li>
+          </ul>
+        </article>
+        <article class="card f3">
+          <p class="eyebrow">Cross-Analysis Engine</p>
+          <h3>Кросс-аналитика</h3>
+          <p>Туғаннан берілген әлеует пен қазіргі күйің салыстырылады. AI екеуінің арасындағы байланысты терең талдайды.</p>
+          <svg class="venn" viewBox="0 0 320 180" role="img" aria-label="Матрица мен тест нәтижелерінің қиылысуы синергияны береді">
+            <circle cx="130" cy="90" r="72" fill="var(--rose)" fill-opacity="0.5" stroke="var(--rose)" stroke-width="1.5"/>
+            <circle cx="190" cy="90" r="72" fill="var(--lav)" fill-opacity="0.55" stroke="var(--lav)" stroke-width="1.5"/>
+            <text x="88" y="94">Матрица</text>
+            <text x="160" y="94">Синергия</text>
+            <text x="232" y="94">Тесттер</text>
+          </svg>
+        </article>
+        <article class="card f4">
+          <p class="eyebrow">Cosmic Feed</p>
+          <h3>Космикалық жаңалықтар лентасы</h3>
+          <p>Ай фазалары, ретроградтық планеталар мен күн тұтылуы туралы күнделікті ақпарат. Әр ескерту нақты сенің профиліңе бейімделеді.</p>
+          <ul class="chips">
+            <li>Ай фазалары</li><li>Меркурий ретроградтығы</li><li>Венера ретроградтығы</li><li>Күн тұтылуы</li>
+          </ul>
+          <div class="thought">
+            <small>Күннің ойы · мысал</small>
+            <q>Бүгін мені қандай күтпеген сәттілік күтіп тұр?</q>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="band tint" id="demo" aria-labelledby="d-h">
+    <div class="wrap demo">
+      <div class="demo-form">
+        <p class="eyebrow">Тікелей көріп көр</p>
+        <h2 id="d-h">Пифагор квадратыңды есептеп көр</h2>
+        <p>Туған күніңді енгіз. Квадрат браузеріңде бірден есептеледі, ешқандай деректер сақталмайды.</p>
+        <div class="field">
+          <label for="dob">Туған күн</label>
+          <input id="dob" type="date" value="2003-05-14" min="1900-01-01">
+          <small>Қазір үлгі күн тұр. Өз күніңді енгізіп көр.</small>
+        </div>
+        <dl class="facts" aria-live="polite">
+          <div><dt>Жұмыс сандары</dt><dd id="work">–</dd></div>
+          <div><dt>Өмір жолы саны</dt><dd id="life">–</dd></div>
+          <div><dt>Күшті жақтар</dt><dd id="strong">–</dd></div>
+          <div><dt>Дамыту аймақтары</dt><dd id="grow">–</dd></div>
+        </dl>
+        <p class="note">Бұл қысқа демо. Толық матрица мен AI талдауы платформаның негізгі нұсқасында болады. Нәтиже өзін-өзі танудың бір құралы, диагноз емес.</p>
+      </div>
+      <div class="demo-stage">
+        <div class="halo">
+          <div class="sq" id="sq" role="group" aria-label="Пифагор квадраты"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" aria-labelledby="a-h">
+    <div class="wrap anti">
+      <div class="swirl" aria-hidden="true">
+        <svg viewBox="0 0 300 400" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <linearGradient id="fig" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#E7A3AE"/>
+              <stop offset="1" stop-color="#B79BDD"/>
+            </linearGradient>
+            <radialGradient id="bub" cx="0.35" cy="0.3" r="0.8">
+              <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.9"/>
+              <stop offset="1" stop-color="#FBD9D2" stop-opacity="0.25"/>
+            </radialGradient>
+          </defs>
+          <g fill="none" stroke="#FFFFFF" stroke-opacity="0.35" stroke-width="0.8">
+            <circle cx="150" cy="190" r="40"/><circle cx="150" cy="190" r="56"/><circle cx="150" cy="190" r="72"/>
+            <circle cx="150" cy="190" r="90"/><circle cx="150" cy="190" r="110"/><circle cx="150" cy="190" r="132"/>
+          </g>
+          <circle cx="64" cy="96" r="16" fill="url(#bub)"/>
+          <circle cx="238" cy="70" r="9" fill="url(#bub)"/>
+          <circle cx="248" cy="250" r="12" fill="url(#bub)"/>
+          <circle cx="46" cy="230" r="7" fill="url(#bub)"/>
+          <circle cx="196" cy="118" r="5" fill="url(#bub)"/>
+          <g fill="#FFFFFF" fill-opacity="0.55">
+            <ellipse cx="150" cy="52" rx="19" ry="25"/>
+          </g>
+          <path d="M126 96 C132 74 168 74 174 96 C170 112 130 112 126 96Z" fill="#FFFFFF" fill-opacity="0.28"/>
+          <g fill="url(#fig)" fill-opacity="0.9">
+            <circle cx="150" cy="290" r="13"/>
+            <path d="M124 372 C124 330 134 306 150 306 C166 306 176 330 176 372Z"/>
+            <path d="M126 322 C108 340 98 360 92 378 L112 382 C120 364 130 346 138 332Z"/>
+            <path d="M174 322 C192 340 202 360 208 378 L188 382 C180 364 170 346 162 332Z"/>
+            <path d="M72 386 C100 362 200 362 228 386 C200 400 100 400 72 386Z"/>
+          </g>
+        </svg>
+        <q>Бүгін мені қандай күтпеген сәттілік күтіп тұр?</q>
+      </div>
+      <div>
+        <p class="eyebrow">ShynAI Anti-Fatalism Filter</p>
+        <h2 id="a-h">Қорқыныш емес, өсу туралы ғана</h2>
+        <ul class="rules">
+          <li><strong>Жағымсыз болжам жоқ</strong><span>Жүйе ешқашан қорқынышты немесе жағымсыз болжам жасамайды.</span></li>
+          <li><strong>Барлығы өсуге бағытталған</strong><span>Әр мәлімет тұлғалық өсуге, мотивацияға және өзін-өзі дамытуға қызмет етеді.</span></li>
+          <li><strong>Жеке және түсінікті</strong><span>Кеңес сенің профиліңе арналып, қарапайым тілмен беріледі.</span></li>
+        </ul>
+        <div class="beforeafter" aria-label="Сүзгі мысалы">
+          <div class="ba"><small>Ескі гороскоп</small><span>Алдағы айда қиындықтар мен шығындар күтіп тұр.</span></div>
+          <div class="ba good"><small>ShynAI</small><span>Бұл кезеңде жоспарлау мен шыдамдылық күшті жағың болады. Шығындарыңды алдын ала саралап көр.</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band tint" id="tech" aria-labelledby="t-h">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Технологиялық стек</p>
+        <h2 id="t-h">Қандай технологиялармен жасалады</h2>
+      </div>
+      <ul class="stack">
+        <li><span class="layer">Frontend</span><span class="tool">React / Flutter</span><span class="role">Мобильді немесе веб қосымшаның кросс-платформалық интерфейсі.</span></li>
+        <li><span class="layer">Backend</span><span class="tool">Python · FastAPI / Django</span><span class="role">Матрицалық және нумерологиялық есептеу алгоритмдерін өңдеуге ең қолайлы тіл.</span></li>
+        <li><span class="layer">AI Integration</span><span class="tool">OpenAI API (GPT-4o-mini) немесе Claude</span><span class="role">Матрица мен тест нәтижелерін қорытып, жеке мәтін жасайды.</span></li>
+        <li><span class="layer">Database</span><span class="tool">PostgreSQL</span><span class="role">Пайдаланушы профильдері мен деректерін сақтайды.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="band" id="pricing" aria-labelledby="p-h">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Монетизация</p>
+        <h2 id="p-h">Freemium: бастауға тегін</h2>
+        <p>Базалық мүмкіндіктер әркімге ашық. Терең талдау үшін Премиум жазылым бар.</p>
+      </div>
+      <div class="plans">
+        <article class="plan">
+          <h3>Тегін</h3>
+          <p class="price">$0</p>
+          <ul class="dots">
+            <li>Базалық матрица есебі</li>
+            <li>Күнделікті астро-лента</li>
+          </ul>
+        </article>
+        <article class="plan pro">
+          <span class="badge">Премиум</span>
+          <p class="price">$4.99 <small>/ ай</small></p>
+          <ul class="dots">
+            <li>AI ассистентпен шексіз чат</li>
+            <li>Тереңдетілген психологиялық есептер</li>
+            <li>Кросс-аналитика нәтижелері</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <a class="mark" href="#top">Shyn<span>AI</span></a>
+    <p>Ішкі әлеміңе шынайы көзқарас · IT Start Up пәнінен жоба</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var NS = 'http://www.w3.org/2000/svg';
+  var g = document.getElementById('sunRays');
+  if (g) {
+    for (var i = 0; i < 16; i++) {
+      var long = document.createElementNS(NS, 'path');
+      long.setAttribute('d', 'M100 5 L107.5 54 L92.5 54Z');
+      long.setAttribute('fill', 'url(#gg)');
+      long.setAttribute('transform', 'rotate(' + (i * 22.5) + ' 100 100)');
+      g.appendChild(long);
+      var short = document.createElementNS(NS, 'path');
+      short.setAttribute('d', 'M100 24 L104.6 54 L95.4 54Z');
+      short.setAttribute('fill', 'url(#gg)');
+      short.setAttribute('transform', 'rotate(' + (i * 22.5 + 11.25) + ' 100 100)');
+      g.appendChild(short);
+    }
+  }
+
+  var NAMES = ['Мінез', 'Энергия', 'Таным', 'Денсаулық', 'Логика', 'Еңбек', 'Талант', 'Жауапкершілік', 'Ақыл-ес'];
+  var LIFE = [
+    'Көшбасшылық және бастамашылдық.',
+    'Сезімталдық және келісімге келу өнері.',
+    'Шығармашылық және сөйлеу қабілеті.',
+    'Жүйелілік және төзімділік.',
+    'Еркіндік және өзгеріске бейімділік.',
+    'Қамқорлық және жауапкершілік.',
+    'Талдау және ішкі іздеу.',
+    'Мақсаткерлік және ұйымдастыру қабілеті.',
+    'Жанашырлық және кең көзқарас.'
+  ];
+  var ORDER = [1, 4, 7, 2, 5, 8, 3, 6, 9];
+
+  var sq = document.getElementById('sq');
+  var cells = {};
+  ORDER.forEach(function (n) {
+    var c = document.createElement('div');
+    c.className = 'cell';
+    c.innerHTML = '<span class="n">' + n + '</span><span class="v"></span><span class="t">' + NAMES[n - 1] + '</span>';
+    sq.appendChild(c);
+    cells[n] = c;
+  });
+
+  function sumDigits(str) {
+    var s = 0;
+    for (var i = 0; i < str.length; i++) {
+      var d = str.charCodeAt(i) - 48;
+      if (d >= 0 && d <= 9) s += d;
+    }
+    return s;
+  }
+
+  function calc(value) {
+    var p = value.split('-');
+    if (p.length !== 3 || p[0].length !== 4) return null;
+    var all = p[2] + p[1] + p[0];
+    var a = sumDigits(all);
+    var b = sumDigits(String(a));
+    var fd = 0;
+    for (var i = 0; i < p[2].length; i++) {
+      if (p[2][i] !== '0') { fd = +p[2][i]; break; }
+    }
+    var c = a - 2 * fd;
+    var d = sumDigits(String(Math.abs(c)));
+    var pool = all + a + b + Math.abs(c) + d;
+    var counts = {};
+    for (var n = 1; n <= 9; n++) counts[n] = 0;
+    for (var j = 0; j < pool.length; j++) {
+      var ch = +pool[j];
+      if (ch >= 1) counts[ch]++;
+    }
+    var life = a;
+    while (life > 9) life = sumDigits(String(life));
+    return { work: [a, b, c, d], counts: counts, life: life };
+  }
+
+  function set(id, text) { document.getElementById(id).textContent = text; }
+
+  function render() {
+    var r = calc(document.getElementById('dob').value);
+    if (!r) {
+      set('work', 'Күнді толық енгіз.');
+      return;
+    }
+    var strong = [], grow = [];
+    ORDER.forEach(function (n) {
+      var k = r.counts[n];
+      cells[n].querySelector('.v').textContent = k ? new Array(k + 1).join(n) : '–';
+      cells[n].setAttribute('data-level', k >= 3 ? 'strong' : (k === 0 ? 'zero' : 'mid'));
+    });
+    for (var n = 1; n <= 9; n++) {
+      if (r.counts[n] >= 3) strong.push(NAMES[n - 1]);
+      if (r.counts[n] === 0) grow.push(NAMES[n - 1]);
+    }
+    set('work', r.work.join(' · '));
+    set('life', r.life + ' — ' + LIFE[r.life - 1]);
+    set('strong', strong.length ? strong.join(', ') : 'Теңгерімді профиль: ерекше басым жағы жоқ.');
+    set('grow', grow.length ? grow.join(', ') + ' — дамытуға болатын жақтар.' : 'Барлық бағыт бар, әрқайсысын өсіруге болады.');
+  }
+
+  var input = document.getElementById('dob');
+  input.max = new Date().toISOString().slice(0, 10);
+  input.addEventListener('input', render);
+  input.addEventListener('change', render);
+  render();
+})();
+</script>
+
+</body></html>
